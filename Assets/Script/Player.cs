@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VisionOS;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,13 @@ public class Player : MonoBehaviour
     Vector2 minBounds;
     Vector2 maxBounds;
 
-    [SerializeField] private float _paddingLeft = 0.5f;
+    Shooter shooter;
+	private void Awake()
+	{
+		shooter = GetComponent<Shooter>();
+	}
+
+	[SerializeField] private float _paddingLeft = 0.5f;
     [SerializeField] private float _paddingRight = 0.5f;
     [SerializeField] private float _paddingTop = 5f;
     [SerializeField] private float _paddingBottom = 2f;
@@ -47,4 +54,12 @@ public class Player : MonoBehaviour
         newPos.y = Mathf.Clamp(transform.position.y + delta.y, minBounds.y + _paddingBottom, maxBounds.y - _paddingTop);
 		transform.position = newPos;
 	}
+
+    void OnFire(InputValue value)
+    {
+        if (shooter != null)
+        {
+            shooter.isFiring = value.isPressed;
+        }
+    }
 }
